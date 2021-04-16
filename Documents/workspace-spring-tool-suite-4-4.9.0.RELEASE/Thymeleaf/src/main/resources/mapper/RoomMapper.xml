@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+	PUBLIC "-//mybatis.org//DTOMapper3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demo.mapper.RoomMapper">
+
+	<select id="getRoomList" resultType="com.example.demo.bean.RoomVO">
+		select * from Room where id=#{id};
+	</select>
+	
+	<insert id="createReservation" parameterType="com.example.demo.bean.ReservationVO">
+		insert into Reservation (r_id, u_id, prof, department, r_date, start_time, end_time, purpose, contact, info, reg_date) values 
+		(#{r_id},#{u_id},#{prof},#{department},#{r_date},#{start_time},#{end_time},#{purpose},#{contact},#{info},NOW())
+	</insert>
+	
+	<select id="getReservationList" resultType="com.example.demo.bean.ReservationVO">
+		SELECT reserv.*, room.name as room_name, uuser.name as name
+		FROM Reservation as reserv
+		join Room as room on reserv.r_id=room.id 
+		join User as uuser on reserv.u_id=uuser.id
+		where reserv.u_id=#{u_id} order by reg_date desc;
+	</select>
+	
+	<delete id="deleteReservation">
+		DELETE FROM Reservation WHERE id=#{id};
+	</delete>
+	
+	<select id="reservationDetail" parameterType="int" resultType="com.example.demo.bean.ReservationVO">		
+		SELECT reserv.*, room.name as room_name, 
+	   		   uuser.name as name, uuser.email as email
+		FROM Reservation as reserv
+		join Room as room on reserv.r_id=room.id 
+		join User as uuser on reserv.u_id=uuser.id
+		where reserv.id=#{id}
+	</select>
+	
+	<update id="updateReservation" parameterType="com.example.demo.bean.ReservationVO">
+		UPDATE Reservation SET 
+		prof=#{prof}, r_date=#{r_date}, start_time=#{start_time}, contact=#{contact}, 
+		end_time=#{end_time}, purpose=#{purpose}, info=#{info} WHERE id=#{id}
+	</update>
+	
+	<select id="readReservByOrder" resultType="com.example.demo.bean.ReservationVO" >
+		SELECT reserv.*, room.name as room_name, uuser.name as name 
+		FROM Reservation as reserv
+		join Room as room on reserv.r_id=room.id 
+		join User as uuser on reserv.u_id=uuser.id
+		order by 
+		<choose>
+		    <when test="orderValue eq 'reg_date'">reg_date desc</when>
+		    <when test="orderValue eq 'r_date'">r_date desc</when>
+		    <otherwise>reg_date desc</otherwise>
+		</choose>
+	</select>
+	
+</mapper>

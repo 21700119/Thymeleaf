@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmls:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>CSEE 강의실 예약하기</title>
+<link th:href="@{/style.css}" rel='stylesheet' />
+<link rel="stylesheet"
+	th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css}">
+
+<style>
+h3{ text-align: center; }
+#form { width: 70%; margin: auto;}
+.btns {float:right;}
+.col-md-3, .col-md-9 { padding-right: 0 !important;}
+.im { color: red;}
+</style>
+</head>
+
+<body>
+	<div id="header">
+		<div th:replace="./inc/loginHeader :: loginHeader"></div>
+	</div>
+	<br><br><br><br>
+	<div id="container" >
+		<h3>예약하기</h3><br><br>
+		<form id="form" role="form" th:action="@{/fileBoard/insertProc/{rno}(rno=${id})}" method="post" enctype="multipart/form-data">
+			<div class="form-row">
+				<div class="form-group col-md-6">
+					<label>장소</label><p th:text="${room_name}"></p>
+				</div>
+				<div class="form-group col-md-6">
+					<label>예약 가능한 기간</label><p>2021-03-12 ~ 2021-06-18</p>
+				</div>
+				<div class="form-group col-md-3">
+					<label for="input">이름</label><p th:text="${session.user.name}"></p>
+				</div>
+				<div class="form-group col-md-3">
+					<label>이메일</label><p th:text="${session.user.email}"></p>
+				</div>
+			</div>
+			<div class="form-group col-md-3">
+				<label>관련교수<span class="im"> *</span></label>
+				<input type="text" class="form-control" name="prof" placeholder="Ex) 용환기 교수님" required>
+			</div>
+			<div class="form-group col-md-3">
+				<label>학부</label>
+					<select id="department" name="department" class="form-control">
+							<option value="글로벌리더십학부">글로벌리더십학부</option>
+							<option value="국제어문학부">국제어문학부</option>
+							<option value="경영경제학부">경영경제학부</option>
+							<option value="법학부">법학부</option>
+							<option value="공간환경시스템공학부">공간환경시스템공학부</option>
+							<option value="기계제어공학부">기계제어공학부</option>
+							<option value="콘텐츠융합디자인학부">콘텐츠융합디자인학부</option>
+							<option value="생명과학부">생명과학부</option>
+							<option value="전산전자공학부" selected>전산전자공학부</option>
+							<option value="상담심리사회복지학부">상담심리사회복지학부</option>
+							<option value="ICT창업학부">ICT창업학부</option>
+							<option value="창의융합교육원">창의융합교육원</option>
+					</select>
+			</div>
+			<div class="form-row">
+				<div class="form-group col-md-3">
+					<label>날짜<span class="im"> *</span></label>
+					<input type="date" name="r_date" class="form-control" required>
+				</div>
+				<div class="form-group col-md-3">
+					<label>시작 시간</label><input type="time" name="start_time" class="form-control">
+				</div>
+				<div class="form-group col-md-3">
+					<label>종료 시간</label><input type="time" name="end_time" class="form-control">
+				</div>
+				<div class="form-group col-md-3">
+					<label>목적<span class="im"> *</span></label>
+					<input type="text" name="purpose" class="form-control" placeholder="수업 등" required>
+				</div>
+				<div class="form-group col-md-3">
+					<label>연락처<span class="im"> *</span></label>
+					<input type="text" name="contact" class="form-control" placeholder="010-1234-5678" required>
+				</div>
+				<div class="form-group col-md-9">
+					<label>추가사항</label> 
+					<input type="text" class="form-control" id="info" name="info" placeholder="예상인원, 구체적인 활동 내용 등">
+				</div>
+			</div>
+			<input type="hidden" name="rid" th:value="${id}">
+			<div class="btns">
+				<input type="reset"  th:value="취소하기" onclick="location.href='/fileBoard/list'" class="btn btn-warning"/>
+				<input type="submit" th:value="예약하기" class="btn btn-warning" /> 	
+			</div>
+		</form>
+	</div>
+	<div id="footer">
+		<div th:replace="./inc/footer :: footer"></div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+</head>
+
+<body>
+	<div th:fragment="logoutHeader">
+		<ul id="header_ul">
+			<li class="header_li"><a class="active" href="#">CSEE 강의실 예약 시스템</a></li>
+			<li class="header_li"><a th:href="@{/fileBoard/list}">조회 및 예약하기</a></li>
+			<li class="header_li" style="float: right">
+				<a class="active mybtn" th:href="@{/login}">
+				<button class = "mybtn" style="
+					color: black; border-radius: 50px; border:0; outline:0; 
+					background-color:white;">로그인</button></a>
+			</li>
+		</ul>
+	</div>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+	PUBLIC "-//mybatis.org//DTOMapper3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demo.mapper.FileBoardMapper">
+
+	<select id="getFileBoardList" resultType="com.example.demo.bean.FileBoardVO">
+		select * from file_board
+		order by b_no
+	</select>
+	
+	<select id="fileBoardDetail" parameterType="int" resultType="com.example.demo.bean.FileBoardVO">
+		select * from file_board
+		where b_no=#{b_no}
+	</select>
+	
+	<insert id="fileBoardInsert" parameterType="com.example.demo.bean.FileBoardVO" keyProperty="b_no">
+		insert into file_board(title,content,writer)
+		values (#{title}, #{content}, #{writer})
+	</insert>
+	
+	<update id="fileBoardUpdate" parameterType="com.example.demo.bean.FileBoardVO">
+		update file_board set
+		<if test="title != null">title=#{title}</if>
+		<if test="title != null and content != null">,</if>
+		<if test="content != null">content=#{content}</if>
+		where b_no=#{b_no}
+	</update>
+	
+	<delete id="fileBoardDelete" parameterType="int">
+		delete from file_board where b_no=#{b_no}
+	</delete>
+	
+	<insert id="fileInsert" parameterType="com.example.demo.bean.FileVO">
+    	<selectKey keyProperty="b_no" resultType="int" order="BEFORE">
+      		SELECT MAX(b_no)
+      		FROM file_board
+   	 	</selectKey>
+    	INSERT INTO file(b_no, filename, fileoriginname, fileurl) 
+    	VALUES(#{b_no}, #{filename}, #{fileoriginname}, #{fileurl})
+  	</insert>
+  	
+  	<select id="fileDetail" parameterType="int" resultType="com.example.demo.bean.FileVO">
+    	SELECT * FROM file WHERE b_no=#{b_no}
+ 	</select>
+</mapper>

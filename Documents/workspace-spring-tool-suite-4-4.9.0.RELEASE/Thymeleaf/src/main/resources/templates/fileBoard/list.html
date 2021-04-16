@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>CSEE 강의실 예약 시스템</title>
+<link th:href="@{/fullcalendar/main.css}" rel='stylesheet' />
+<link th:href="@{/style.css}" rel='stylesheet' />
+<link rel="stylesheet" th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css}">
+<script th:src="@{/fullcalendar/main.js}" type="text/javascript"></script>
+<script th:src="@{//code.jquery.com/jquery-1.11.0.min.js}"></script>
+
+<script>
+	document.addEventListener('DOMContentLoaded', function() {
+		var calendarEl = document.getElementById('calendar');
+		var calendar = new FullCalendar.Calendar(calendarEl, {
+			initialView : 'dayGridMonth'
+		});
+		calendar.render();
+	});
+	
+	function showInfo(id) {
+			$.ajax({
+				url: "/fileBoard/blist",
+				type: "POST",
+				async: false,
+				data: {
+					id: id
+				},
+				success: function(data){
+					$('#room_info').html(data);
+				}, 
+				error:function(request, status, error){
+					console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		        }
+			});  
+	}
+	
+	function moveInsertPage(id){
+		var id = $('#r_id').val();
+		location.href='/fileBoard/insert/'+id;
+	};
+	
+	function moveAlert(){
+		alert("로그인 후 이용해주세요.");
+	};
+</script>
+</head>
+<body>
+	<div id="header">
+		<span th:if="${session.user} == null">
+			<div th:replace="/inc/logoutHeader :: logoutHeader"> </div>
+		</span>
+		<span th:if="${session.user} != null">
+			<div th:replace="/inc/loginHeader :: loginHeader"> </div>
+		</span>
+	</div><br><br><br><br>
+	<div align="center">
+		<h3>조회 / 예약하기</h3><br>
+		<button class="room" type="button" th:onclick="|javascript:showInfo(1)|" autofocus>뉴턴 220호</button>
+		<button class="room" type="button" th:onclick="|javascript:showInfo(2)|">뉴턴 310호</button>
+		<button class="room" type="button" th:onclick="|javascript:showInfo(3)|">뉴턴 313호</button>
+		<button class="room" type="button" th:onclick="|javascript:showInfo(4)|">뉴턴 412호</button>
+		<button class="room" type="button" th:onclick="|javascript:showInfo(5)|">뉴턴 413호</button>
+		<button class="room" type="button" th:onclick="|javascript:showInfo(6)|">뉴턴 414호</button>
+		<button class="room" type="button" th:onclick="|javascript:showInfo(7)|">뉴턴 417호</button>
+		<br><br>
+		<div id="room_info">
+			<div th:replace="./ajaxContent/listContent :: listContent"> </div>
+		</div>
+		<input type="hidden" id="r_id" th:value="${id}">
+		<span th:if="${session.user} == null">
+			<button class="btn btn-warning" onclick="moveAlert()">예약하기</button>
+		</span>
+		<span th:if="${session.user} != null">
+			<button class="btn btn-warning" onclick="moveInsertPage()">예약하기</button>
+		</span>
+		<div id='calendar'></div>
+	</div>
+	<br><br><br>
+	<div id="footer">
+		<div th:replace="./inc/footer :: footer"> </div>	
+	</div> 
+</body>
+</html>

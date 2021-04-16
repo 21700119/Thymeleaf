@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+</head>
+<body>
+	<div th:fragment="listContent">
+		<table class="table" th:each="data, i : ${testlist}">
+			<input type="hidden" id="r_id" th:value="${data.id}">
+			<tbody>
+			<tr>
+				<td class="title" style="font-weight: bolder;" id="title">강의실</td>
+				<td class="content" th:text="${data.name}"></td>
+			</tr>
+			<tr>
+				<td class="title" style="font-weight: bolder;">수용 가능 인원</td>
+				<td class="content" th:text="${data.person}"></td>
+			</tr>
+			<tr>
+				<td class="title" style="font-weight: bolder;">프로젝터 여부</td>
+				<td class="content" th:text="${data.projector} ? 'O' : 'X'"></td>
+			</tr>
+			<tr>
+				<td class="title" style="font-weight: bolder;">추가설명</td>
+				<td class="content" th:text="${data.info}"></td>
+			</tr>
+			</tbody>	
+		</table>
+	</div>
+</body>
+</html>

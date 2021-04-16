@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+	PUBLIC "-//mybatis.org//DTOMapper3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demo.mapper.UserMapper">
+	<insert id="createUserInfo" parameterType="com.example.demo.bean.UserVO">
+		insert into User (name, email, reg_date, is_admin) values (#{name}, #{email}, now(), 0)
+	</insert>
+	
+	<select id="readUserIDByEmail"  parameterType="String" resultType="int">
+		SELECT id FROM User WHERE email=#{email}
+	</select>
+	
+	<select id="readIsAdminByUserID" parameterType="int" resultType="int">
+		SELECT is_admin FROM User WHERE id=#{id}
+	</select>
+	
+</mapper>

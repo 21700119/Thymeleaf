@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>파일게시판-상세페이지</title>
+<link th:href="@{/style.css}" rel='stylesheet' />
+<script th:src="@{https://use.fontawesome.com/releases/v5.2.0/js/all.js}"></script>
+<link rel="stylesheet" th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css}">
+<script th:src="@{https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js}"></script>
+<script th:src="@{https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js}"></script>
+
+<script type="text/javascript">
+	function deleteReservation(id) {
+		if (confirm("예약을 취소하시겠습니까?")) {
+			location.href = "/fileBoard/delete/" + id;
+		}
+	}
+	
+	function printModal(id){
+		$.ajax({
+			url: "/fileBoard/update",
+			type: "POST",
+			async: false,
+			data: {
+				id:id
+			},
+			success: function(data){
+				$('#readModal').html(data);
+		        $('#myModal').modal('show');
+			}, 
+			error:function(request, status, error){
+				console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+	        }
+		});
+	}
+	
+	function search(){
+		$.ajax({
+				url: "/fileBoard/search",
+				type: "POST",
+				async: false,
+				data: {
+					orderValue:$('#orderValue option:selected').val(),
+				},
+				success: function(data){
+					$('#orderList').html(data);
+				}, 
+				error:function(request, status, error){
+					console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		        }
+		});
+	}
+	
+/* 	function search(page){
+		
+		if($('#recentPage').val() == null) {
+			page=1;
+		}
+		
+		$.ajax({
+				url: "/fileBoard/search",
+				type: "POST",
+				async: false,
+				data: {
+					page: page,
+					orderValue:$('#orderValue option:selected').val(),
+				},
+				success: function(data){
+					$('#orderList').html(data);
+				}, 
+				error:function(request, status, error){
+					console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		        }
+		});
+	} */
+</script>
+<style>
+td { text-align: center; cursor: pointer; }
+.manage { border: 0; outline:0; color: white; border-radius: 10px; padding: 0px 10px;}
+.edit { background-color: #ffdc00; }
+.delete { background-color: red; }
+.table { width: 75%; margin-top: 10px;}
+.thead { background-color: #333; color: white;}
+#orderValue { margin-left: 69.5%;}
+</style>
+</head>
+
+<body>
+	<div id="header">
+		<div th:replace="./inc/loginHeader :: loginHeader"></div>
+	</div>
+	<br><br><br><br>
+	<div id="container" align="center">
+		<h3>예약목록</h3>
+		<br />
+		<button class="room" type="button" th:onclick="|javascript:showInfo(1)|">뉴턴 220호</button>
+		<button class="room" type="button" th:onclick="|javascript:showInfo(2)|">뉴턴 310호</button>
+		<button class="room" type="button" th:onclick="|javascript:showInfo(3)|">뉴턴 313호</button>
+		<button class="room" type="button" th:onclick="|javascript:showInfo(4)|">뉴턴 412호</button>
+		<button class="room" type="button" th:onclick="|javascript:showInfo(5)|">뉴턴 413호</button>
+		<button class="room" type="button" th:onclick="|javascript:showInfo(6)|">뉴턴 414호</button>
+		<button class="room" type="button" th:onclick="|javascript:showInfo(7)|">뉴턴 417호</button>
+		<br><br>
+		<select name="sort" id="orderValue" th:name="orderValue" onchange="search()">
+    		<option value="reg_date">신청일 순</option>
+    		<option value="r_date">사용일 순</option>
+  		</select>
+  		<div id="orderList">
+  			<div th:replace="./ajaxContent/orderList :: orderList"></div>
+  		</div>
+		
+		<div id="readModal">
+			<div th:replace="./ajaxContent/detailModal :: detailModal"></div>
+		</div>
+		
+	</div>
+	<div id="footer">
+		<div th:replace="./inc/footer :: footer"> </div>	
+	</div> 
+</body>
+</html>

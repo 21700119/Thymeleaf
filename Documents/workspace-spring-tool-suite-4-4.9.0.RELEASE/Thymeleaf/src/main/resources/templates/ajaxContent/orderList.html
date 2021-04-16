@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<style>
+</style>
+</head>
+<body>
+	<div th:fragment="orderList">
+		<table class="table table-striped">
+			<thead>
+			<tr class="thead">
+				<td style="font-weight: bolder;" id="title">NO.</td>
+				<td style="font-weight: bolder;" id="title">강의실</td>
+				<td style="font-weight: bolder;" id="title">사용날짜</td>
+				<td style="font-weight: bolder;" id="title">사용시간</td>
+				<td style="font-weight: bolder;" id="title">사용목적</td>
+				<td style="font-weight: bolder;" id="title">신청인</td>
+				<td style="font-weight: bolder;" id="title">신청일</td>
+				<!-- <td style="font-weight: bolder;" id="title">예약상태</td> -->
+				<td style="font-weight: bolder;" id="title">관리</td>
+			</tr>
+			</thead>
+			<tbody>
+			<tr th:each="data, i : ${detail}">
+				<td th:text="${i.count}"></td>
+				<td th:text="${data.room_name}"></td>
+				<td th:text="${#dates.format(data.r_date, 'yyyy-MM-dd')}"></td>
+				<td th:text="|${data.start_time}~${data.end_time}|"></td>
+				<td th:text="${data.purpose}"></td>
+				<td th:text="${data.name}">
+				</td><td th:text="${#dates.format(data.reg_date, 'yyyy-MM-dd')}"></td>
+				<!-- <td th:if="|${#dates.format(data.r_date, 'yyyy-MM-dd')} > ${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}|"th:text="진행중"></td> -->
+				<td>
+					<button class="manage edit" th:onclick="|javascript:printModal('${data.id}')|"><i class="fas fa-edit"></i></button>
+					<button class="manage delete" th:onclick="|javascript:deleteReservation('${data.id}')|"><i class="fas fa-times"></i></button>
+				</td>
+			</tr>
+			</tbody>
+		</table>
+		
+		<nav aria-label="Page navigation example">
+  <ul class="pagination">
+    <li class="page-item">
+      <a class="page-link" href="#" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    <li class="page-item"><a class="page-link" href="#">1</a></li>
+    <li class="page-item"><a class="page-link" href="#">2</a></li>
+    <li class="page-item"><a class="page-link" href="#">3</a></li>
+    <li class="page-item">
+      <a class="page-link" href="#" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+  </ul>
+</nav>
+		
+		<!-- pagination -->
+<!-- 		<div class="table-pagination">
+    	<ul class="pagination">
+        <li th:class="${page eq 1} ? 'page-item disabled' : 'page-item'">
+        	<a class="page-link" th:if="${page eq 1}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+        	<a class="page-link" th:if="${not (page eq 1)}" th:onclick="|javascript:search('${page-1}')|" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+        </li>
+        <li th:each="p : ${#numbers.sequence(${s_page},${e_page})}" th:value="${p eq page}? '${p}' : ''">
+            <a th:if="${p eq page}" class="page-link"><span th:text="${p}"></span></a>
+            <a th:if="${not(p eq page)}" class="page-link"><span th:onclick="|javascript:search('${p}')|" th:text="${p}"></span></a>
+        </li>
+        <li th:class="${page eq e_page} ? 'page-item disabled' : 'page-item'">
+        	<a class="page-link" th:if="${page eq e_page}" aria-label="Previous"><span aria-hidden="true">&raquo;</span></a>
+        	<a class="page-link" th:if="${not (page eq e_page)}" th:onclick="|javascript:search('${page+1}')|" aria-label="Previous"><span aria-hidden="true">&raquo;</span></a>
+        </li>
+    	</ul>
+		</div> -->
+<!--   		<ul class="pagination">
+		<c:if test="${ page eq 1 }">
+			<li class="disable-button"><span class="arrow-button"><i class="material-icons">chevron_left</i></span></li>
+		</c:if>
+		<c:if test="${ page != 1 }">
+			<li class="waves-effect"><span class="arrow-button" onclick="search(${page-1})"><i class="material-icons">chevron_left</i></span></li>
+		</c:if>
+		<c:forEach var="p" begin="${s_page}" end="${e_page}">
+			<c:if test="${ p eq page }">
+				<li id="recentPage" class="active orange" value="${p}"><span class="pagination-button" >${p}</span></li>
+			</c:if>
+			<c:if test="${ p != page }">
+				<li class="waves-effect"><span class="pagination-button" onclick="search(${p})">${p}</span></li>
+			</c:if>
+		</c:forEach>
+		<c:if test="${ page eq e_page }">
+			<li class="disable-button"><span class="arrow-button"><i class="material-icons">chevron_right</i></span></li>
+		</c:if>
+		<c:if test="${ page != e_page }">
+			<li class="waves-effect"><span class="arrow-button" onclick="search(${page+1})"><i class="material-icons">chevron_right</i></span></li>
+		</c:if>
+	</ul> -->
+	</div>
+</body>
+</html>
